@@ -1,0 +1,8 @@
+ein wenig mit hough_demo.p rumspielen
+- 1): Schritt für Schritt das Skript "houghTransform.m" vervollständigen
+- 2a): zunächst "getAccumulatorUpdate.m" vervollständigen => idealerweise OHNE for-Schleife! (Laufzeitvergleich)
+=> Hinweis: Vektorisierung ohne "for" meist in Verbindung mit meshgrid und punktweiser Operatoren
+- 2b): "houghCircle.m" vervollständigen
+=> Randbehandlung: Pixel am Rand ignorieren oder die Akkumulatormatrix passend vergrößern
+- 2c): ein eigenes Testskript schreiben, um Zellen zu erkennen (plotCircle verwenden)
+- 2d)*: "houghCircle.m" anpassen: Vermeidung ähnlicher Kreise, indem der Bereich um Maxima herum auf 0 gesetzt wird
