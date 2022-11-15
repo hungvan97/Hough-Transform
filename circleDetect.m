@@ -27,11 +27,12 @@ title('Kantenbild');
 subplot(2, 2, 3);
 minR = 15;
 maxR = 25;   
-nc = 400;
+nc = 100;
 [mOut, nOut, rOut] = houghCircle(I_edge, nc, minR, maxR);  
-plotCircle(mOut, nOut, rOut);
+plotCircle(nOut, mOut, rOut);               %nOut:y-axis, mOut:x-axis, rOut: radius
 
 % Historgram der Radien der gefunden Kreis
 subplot(2, 2, [2,4])
 histogram(rOut);
 title("gefunden Radien")
+xlabel('Anzahl'), ylabel('Radius');
