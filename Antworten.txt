@@ -1,0 +1,20 @@
+Group 2
+Thi Quynh Trang Pham: 10042831 
+Long Dao Thanh: 10042832
+Van Hung Do: 10048983
+
+Antworten den Kontrollfragen
+
+a) . Parameter "theta" and "rho" describe the coordinates in accumulation matrix, which is converted from x-y coordinate from the formular in the Vorlesung page 8, 9
+   . The disadvantage of using "a" and "b" in the formular y = ax + b is: to list all for lines coming through each point (x, y) the value range of a is (-limit, +limit), 
+								          which is by machine very time-consuming
+   . By using "theta" and "rho": for each point (x, y) the value range of "theta" is limited in (-2*pi, +2*pi)
+
+b) Accumulatormatrix is the matrix, which has coordinaten convert from original input to appropiate coordinaten.
+
+c) Small circle in the edge image (Kantenbild) tend to contain lots more noise than big circle ( certainly with appropiate threshold, the amount of noise will be reduce). 
+   That's why big circle is much more easier to detect
+
+d) . Of course, the high-dimensional paramter space for the Hough Transform is not only slow to implement, but also will outrun the available memory. 
+   . In our recent exercise, consider the size of the input image is (m*n) 
+   => Time complexity of circle detection using Hough-Transform is O(M*(m*n)^N), whereas M is the number of circle required to be detected, N is the number of parameters.
