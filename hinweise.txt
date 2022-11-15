@@ -6,3 +6,31 @@ ein wenig mit hough_demo.p rumspielen
 => Randbehandlung: Pixel am Rand ignorieren oder die Akkumulatormatrix passend vergrößern
 - 2c): ein eigenes Testskript schreiben, um Zellen zu erkennen (plotCircle verwenden)
 - 2d)*: "houghCircle.m" anpassen: Vermeidung ähnlicher Kreise, indem der Bereich um Maxima herum auf 0 gesetzt wird
+
+
+imageSizeX = 640;
+        imageSizeY = 480;
+        [X, Y] = meshgrid(1:imageSizeX, 1:imageSizeY);
+        I = false(size(X));
+        xc = imageSizeX/2;
+        yc = imageSizeY/2;
+        th = 0:pi/50:2*pi;
+        
+        xunit = 100*cos(th)+xc;
+        yunit = 100*sin(th)+yc;
+        imshow(I)
+        hold on;
+        plot(xunit, yunit);
+        hold off;
+
+
+
+
+
+%xunit = 20*cos(th)+xc;
+        %yunit = 20*sin(th)+yc;
+        %circ = false(size(Y));
+        %circ((X - xc).^2 + (Y - yc).^2 == 20^2) = 1;
+        %circ = (X - xc).^2 + (Y - yc).^2 == 10^2;
+        %image(circ);
+        % colormap([0 0 0; 1 1 1]);

@@ -19,10 +19,31 @@ function [mOut, nOut, rOut] = houghCircle(E, nc, minR, maxR)
     
     
         % TODO
-    k_pixel = find(I_edge); %% vector contains "indices" of nonzero-element in matrix I_edge
+    % vector contains "indices" of nonzero-element in matrix E
+    k_pixel = find(E);
+    
     % convert back to corresponding x, y axis
-    sz_edge = size(I_edge);
-    [xi, yi] = ind2sub(sz_edge, k_pixel); % xi: row contain edge pixel; yi: column contain edge pixel
+    sz_edge = size(E);
+    [xi, yi] = ind2sub(sz_edge, k_pixel); % 1. xi: row contain edge pixel; yi: column contain edge pixel
+                                          % 2. in paramter space, xi yi are
+                                          % the center of the circle that
+                                          % we need to draw the cone around
+                                          % it
+    %length(xi)
+    %length(yi)
+    %sz_edge(1), sz_edge(2)
+    % eliminate edge pixel Rand-nähe
+    pad = maxR;
+    for i = 1:length(xi)    
+        if xi(i) < pad || yi(i) < pad || xi(i) > (sz_edge(2)-pad) || yi(i) > (sz_edge(1)-pad)
+            xi(i) = 0;
+            yi(i) = 0;
+        end
+    end
+    xi = xi(xi~=0);
+    yi = yi(yi~=0);
+%     subplot(2, 2, 4)
+%     scatter(yi, xi, ".")
     
     % Initialisierung der dreidimensionalen (m, n, r) Akkumulatormatrix A 
     % mit geeigneter Quantisierung der Parameter
@@ -30,9 +51,8 @@ function [mOut, nOut, rOut] = houghCircle(E, nc, minR, maxR)
     % Befehl: zeros
     
         
-        % TODO   
-    % initialise accumulator matrix, should have the same size = [20, 20, 20] to A_update (the matrix used to update A)
-    A = zeros(20, 20, 20); 
+        % TODO 
+    A = zeros(sz_edge(1), sz_edge(2), maxR); 
    
     % Bestimmung der Update-Maske für die Akkumulatormatrix
     A_update = getAccumulatorUpdate(minR, maxR);    
@@ -45,15 +65,20 @@ function [mOut, nOut, rOut] = houghCircle(E, nc, minR, maxR)
     %
     % Achten Sie auch auf eine geeignete Randbehandlung.
     
-    
         % TODO
-    A = A + A_update + "corresponding each_pixel in accumulator cooridination"
+    for i = 1:length(xi)
+        A(xi(i)-maxR+1:xi(i)+maxR, yi(i)-maxR+1:yi(i)+maxR, :) = A_update + A(xi(i)-maxR+1:xi(i)+maxR, yi(i)-maxR+1:yi(i)+maxR, :);
+    end
+    %A(xi-maxR+1:xi+maxR, yi-maxR+1:yi+maxR, :) = A_update + A(xi-maxR+1:xi+maxR, yi-maxR+1:yi+maxR, :);
+%     subplot(224)
+%     imagesc(A(:, : , 20))
+    
     
     % finde die nc größten Punkte in der Akkumulatormatrix
     % ensprechende Parameter werden in die Vektoren m, n, r geschrieben
     for it = 1:nc
-        [~, ind] = max(A(:));
-        [mOut(it), nOut(it), rOut(it)] = ind2sub(size(A), ind);
-        A(mOut(it), nOut(it), rOut(it)) = 0;
+        [~, ind] = max(A(:));                                   %% return only the index of maximum element in all dimension
+        [mOut(it), nOut(it), rOut(it)] = ind2sub(size(A), ind); %% convert the founded linear index to subcript index in x-y-rad parameter
+        A(mOut(it), nOut(it), rOut(it)) = 0;                    %% set the maximum to 0, so we won't find these point again when we want to find the next largest
     end
 end

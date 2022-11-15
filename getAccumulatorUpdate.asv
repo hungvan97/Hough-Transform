@@ -1,4 +1,6 @@
-function AUpdate = getAccumulatorUpdate(minR, maxR) 
+function AUpdate = getAccumulatorUpdate(minR, maxR)
+    minR= 1;
+    maxR=10;
         clc;
     % Bestimmung einer Maske zur Erhöhung der Akkumulatormatrix:
     % Für jeden Kantenpixel müssen die Zellen der Matrix erhöht werden, die
@@ -14,11 +16,11 @@ function AUpdate = getAccumulatorUpdate(minR, maxR)
    
         
     	% TODO
-        imageSizeX = 40;
-        imageSizeY = 40;
-        radiusRange = imageSizeX/2;    %% will be the same as x-axis and y-axis of center's point (for 1 center's point we got 1 radius)
+        imageSizeX = maxR*2;
+        imageSizeY = maxR*2;
+        radiusRange = maxR-minR;    %% will be the same as x-axis and y-axis of center's point (for 1 center's point we got 1 radius)
         d_winkel = 360;
-        AUpdate = zeros(radiusRange, radiusRange, radiusRange);
+        
     
     % 2. In der Maske für jeden Radius r die Punkte auf 1 setzen, deren
     %    Abstand zum Bildmittelpunkt (gerundet) r entspricht.
@@ -30,22 +32,23 @@ function AUpdate = getAccumulatorUpdate(minR, maxR)
     
         % TODO
         [X, ~] = meshgrid(0:imageSizeX, 0:imageSizeY);
-        I = zeros(size(X)-1);  % size X = [41, 41] ??
+        AUpdate = zeros(size(X)-1);  % size X = [41, 41] ??
         
         x_center = imageSizeX/2;
         y_center = imageSizeY/2;
-        rad = minR:maxR;
+        %rad = 20;
         
         winkel = linspace(0, 2*pi, d_winkel);
         for rad = minR:maxR
+            figure(rad); clf; 
             x_pixel = x_center + rad*cos(winkel);
             y_pixel = y_center + rad*sin(winkel);
-
-            %% for loop to display circle at AUpdate(0, 0, 20), repeate that from AUpdate(0, 0, 1) to AUpdate(0, 0, 20) to create 3DMaske
+            
             for i = 1:d_winkel
-                I(ceil(x_pixel(:, i)), ceil(y_pixel(:, i))) = 1;
-            end 
-            imshow(I);
+                AUpdate(ceil(x_pixel(:, i)), ceil(y_pixel(:, i))) = 1;
+            end
+%             imshow(AUpdate(:,:, rad));
+            plot(ceil(x_pixel)', ceil(y_pixel)')
             hold on;
         end
         hold off;
