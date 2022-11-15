@@ -1,5 +1,5 @@
 function AUpdate = getAccumulatorUpdate(minR, maxR)
-        clc;
+        
     % Bestimmung einer Maske zur Erhöhung der Akkumulatormatrix:
     % Für jeden Kantenpixel müssen die Zellen der Matrix erhöht werden, die
     % den Kantenpixel generiert haben können. Zur Beschleunigung des

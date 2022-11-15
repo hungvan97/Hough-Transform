@@ -29,9 +29,6 @@ function [mOut, nOut, rOut] = houghCircle(E, nc, minR, maxR)
                                           % the center of the circle that
                                           % we need to draw the cone around
                                           % it
-    %length(xi)
-    %length(yi)
-    %sz_edge(1), sz_edge(2)
     % eliminate edge pixel Rand-nähe
     pad = maxR;
     for i = 1:length(xi)    
@@ -76,9 +73,25 @@ function [mOut, nOut, rOut] = houghCircle(E, nc, minR, maxR)
     
     % finde die nc größten Punkte in der Akkumulatormatrix
     % ensprechende Parameter werden in die Vektoren m, n, r geschrieben
+    pre_mOut = 0;
+    pre_nOut = 0;
     for it = 1:nc
-        [~, ind] = max(A(:));                                   %% return only the index of maximum element in all dimension
-        [mOut(it), nOut(it), rOut(it)] = ind2sub(size(A), ind); %% convert the founded linear index to subcript index in x-y-rad parameter
-        A(mOut(it), nOut(it), rOut(it)) = 0;                    %% set the maximum to 0, so we won't find these point again when we want to find the next largest
+        % return only the index of maximum element in all dimension
+        [~, ind] = max(A(:));       
+        % convert the founded linear index to subcript index in x-y-rad parameter
+        [mOut(it), nOut(it), rOut(it)] = ind2sub(size(A), ind); 
+        % set the maximum to 0, so we won't find these point again when we want to find the next largest
+         A(mOut(it), nOut(it), rOut(it)) = 0;  
+        %% for the exercise 2d
+        % in each rad dimension, get rid of the center which is stay too
+        % close to previous found center
+        if abs(mOut(it)-pre_mOut)>5 || abs(nOut(it)-pre_nOut)>5
+            pre_mOut = mOut(it);
+            pre_nOut = nOut(it);
+        else
+            mOut(it) = [];
+            nOut(it) = [];
+            rOut(it) = [];
+        end 
     end
 end

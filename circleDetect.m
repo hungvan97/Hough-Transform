@@ -24,7 +24,7 @@ hold on;
 title('Kantenbild');
 
 % Hough Circle Detection
-subplot(2, 2, 3);
+subplot(2, 2, 1);
 minR = 15;
 maxR = 25;   
 nc = 100;
@@ -34,5 +34,6 @@ plotCircle(nOut, mOut, rOut);               %nOut:y-axis, mOut:x-axis, rOut: rad
 % Historgram der Radien der gefunden Kreis
 subplot(2, 2, [2,4])
 histogram(rOut);
+xlim([minR, maxR]);
 title("gefunden Radien")
 xlabel('Anzahl'), ylabel('Radius');

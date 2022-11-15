@@ -1,11 +1,12 @@
-%% Kantenbild erstellen und darstellen
-I = im2double(imread('./bilder/triangle.png'));
+% Kantenbild erstellen und darstellen
+I = im2double(imread('./bilder/Zellen.jpg'));
 if size(I, 3) > 1
     I = rgb2gray(I);
 end
 
 figure(1); clf; subplot(2, 2, 1);
 imshow(I);
+axis on;
 hold on;
 title('Bild');
 
@@ -16,15 +17,23 @@ figure(1); subplot(2, 2, 3);            % (sub)figure anwählen
 
 
     % TODO
-I_edge = edge(I, 'Sobel', 0.05);
-imshow(I_edge)
+I_edge = edge(I, 'Sobel', 0.1);
+imshow(I_edge);
+axis on;
+hold on;
 title('Kantenbild');
 
-%% Hough Circle Detection
-figure(1); clf; subplot(2, 2, 1);
-minR = 1;
-maxR = 20;
-nc = 2;
-gefunden_Kreis = houghCircle(I_edge, nc, minR, maxR);  % will be 2D Matrix [mOut, nOut, rOut]
+% Hough Circle Detection
+subplot(2, 2, 1);
+minR = 15;
+maxR = ;   
+nc = 100;
+[mOut, nOut, rOut] = houghCircle(I_edge, nc, minR, maxR);  
+plotCircle(nOut, mOut, rOut);               %nOut:y-axis, mOut:x-axis, rOut: radius
 
-hold off;
+% Historgram der Radien der gefunden Kreis
+subplot(2, 2, [2,4])
+histogram(rOut);
+xlim([minR, maxR]);
+title("gefunden Radien")
+xlabel('Anzahl'), ylabel('Radius');
